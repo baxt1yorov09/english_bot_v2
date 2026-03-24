@@ -1225,6 +1225,10 @@ Please send the message you want to broadcast to all users.
             except Exception as e:
                 print(f"❌ Webhook error: {e}")
                 print("📡 Falling back to polling mode...")
+                # Create new event loop for polling
+                import asyncio
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
                 application.run_polling(allowed_updates=Update.ALL_TYPES)
         else:
             # Fallback to polling for development
