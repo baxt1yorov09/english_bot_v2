@@ -1204,9 +1204,7 @@ Please send the message you want to broadcast to all users.
         webhook_url = os.getenv('RENDER_EXTERNAL_URL')
         if webhook_url:
             webhook_path = f"{webhook_url}/webhook"
-            import asyncio
-            asyncio.run(application.bot.set_webhook(url=webhook_path))
-            print(f"📡 Webhook set to: {webhook_path}")
+            print(f"📡 Setting webhook to: {webhook_path}")
             application.run_webhook(
                 port=int(os.getenv('PORT', 10000)),
                 drop_pending_updates=True
