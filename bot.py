@@ -1206,9 +1206,10 @@ Please send the message you want to broadcast to all users.
             webhook_path = f"{webhook_url}/webhook"
             print(f"📡 Setting webhook to: {webhook_path}")
             application.run_webhook(
-                port=int(os.getenv('PORT', 10000)),
+                listen_port=int(os.getenv('PORT', 10000)),
                 webhook_url=webhook_path,
-                drop_pending_updates=True
+                drop_pending_updates=True,
+                ip_address="0.0.0.0"
             )
         else:
             # Fallback to polling for development
