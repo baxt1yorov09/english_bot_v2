@@ -1201,12 +1201,13 @@ Please send the message you want to broadcast to all users.
         
         # Set webhook for production
         import os
-        webhook_url = os.getenv('RENDER_EXTERNAL_URL')
+        webhook_url = os.getenv('RENDER_EXTERNAL_URL') or os.getenv('WEBHOOK_URL')
         if webhook_url:
             webhook_path = f"{webhook_url}/webhook"
             print(f"📡 Setting webhook to: {webhook_path}")
             application.run_webhook(
                 port=int(os.getenv('PORT', 10000)),
+                webhook_url=webhook_path,
                 drop_pending_updates=True
             )
         else:
