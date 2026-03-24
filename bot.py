@@ -1196,40 +1196,10 @@ Please send the message you want to broadcast to all users.
         # Message handler
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_message))
         
-        # Start bot with webhook for production
+        # Start bot with polling for production
         print("🚀 Bot is starting...")
-        
-        # Set webhook for production
-        import os
-        webhook_url = os.getenv('RENDER_EXTERNAL_URL') or os.getenv('WEBHOOK_URL')
-        if webhook_url:
-            # Ensure URL has https://
-            if not webhook_url.startswith('https://'):
-                webhook_url = 'https://' + webhook_url
-            
-            webhook_path = f"{webhook_url}/webhook"
-            print(f"📡 Setting webhook to: {webhook_path}")
-            
-            # Manual webhook setup first
-            try:
-                import asyncio
-                print("🔧 Setting up webhook manually...")
-                asyncio.run(application.bot.set_webhook(url=webhook_path))
-                print("✅ Webhook set successfully!")
-                
-                # Now run webhook with correct parameters
-                application.run_webhook(
-                    port=int(os.getenv('PORT', 10000)),
-                    drop_pending_updates=True
-                )
-            except Exception as e:
-                print(f"❌ Webhook error: {e}")
-                print("📡 Falling back to polling mode...")
-                application.run_polling(allowed_updates=Update.ALL_TYPES)
-        else:
-            # Fallback to polling for development
-            print("📡 Running in polling mode (development)")
-            application.run_polling(allowed_updates=Update.ALL_TYPES)
+        print("📡 Running in polling mode (production)")
+        application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
     bot = EnglishLearningBot()
