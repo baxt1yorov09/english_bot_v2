@@ -1205,10 +1205,15 @@ Please send the message you want to broadcast to all users.
         if webhook_url:
             webhook_path = f"{webhook_url}/webhook"
             print(f"📡 Setting webhook to: {webhook_path}")
-            application.run_webhook(
-                port=int(os.getenv('PORT', 10000)),
-                drop_pending_updates=True
-            )
+            try:
+                application.run_webhook(
+                    port=int(os.getenv('PORT', 10000)),
+                    drop_pending_updates=True
+                )
+            except Exception as e:
+                print(f"❌ Webhook error: {e}")
+                print("📡 Falling back to polling mode...")
+                application.run_polling(allowed_updates=Update.ALL_TYPES)
         else:
             # Fallback to polling for development
             print("📡 Running in polling mode (development)")
