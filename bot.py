@@ -1217,7 +1217,7 @@ Please send the message you want to broadcast to all users.
                 asyncio.run(application.bot.set_webhook(url=webhook_path))
                 print("✅ Webhook set successfully!")
                 
-                # Now run webhook
+                # Now run webhook with correct parameters
                 application.run_webhook(
                     port=int(os.getenv('PORT', 10000)),
                     drop_pending_updates=True
@@ -1225,10 +1225,6 @@ Please send the message you want to broadcast to all users.
             except Exception as e:
                 print(f"❌ Webhook error: {e}")
                 print("📡 Falling back to polling mode...")
-                # Create new event loop for polling
-                import asyncio
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
                 application.run_polling(allowed_updates=Update.ALL_TYPES)
         else:
             # Fallback to polling for development
